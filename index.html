@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Noha Moni! 💖</title>
+  <!-- Google Fonts & Confetti CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #ff4d6d;
+      --secondary: #ff758f;
+      --accent: #ff85a1;
+      --light-pink: #ffe5ec;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --text: #4a2835;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #ffccd5 0%, #ffb3c1 50%, #ffe5ec 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating Hearts Canvas */
+    #hearts-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 20px 16px 80px 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Music Toggle Button */
+    .music-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 999;
+      background: white;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 10px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    .music-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.05);
+    }
+
+    /* Glass Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 26px 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 30px rgba(255, 117, 143, 0.2);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    /* Hero Section */
+    .hero-gif {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 10px auto;
+      border: 5px solid #ffb3c1;
+      box-shadow: 0 8px 25px rgba(255, 77, 109, 0.25);
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-top: 10px;
+    }
+
+    .nickname {
+      font-family: 'Caveat', cursive;
+      font-size: 2.7rem;
+      color: #c9184a;
+      display: block;
+      margin-top: -5px;
+    }
+
+    .subtext {
+      font-size: 1.05rem;
+      color: #6d4355;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    /* Countdown Grid */
+    .countdown-grid {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .count-box {
+      background: white;
+      padding: 10px 14px;
+      border-radius: 16px;
+      min-width: 65px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .count-num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .count-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Interactive Birthday Cake */
+    .cake-container {
+      cursor: pointer;
+      display: inline-block;
+      margin: 15px 0;
+      user-select: none;
+    }
+    .cake-img {
+      width: 140px;
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+      transition: transform 0.25s ease;
+    }
+    .cake-container:hover .cake-img {
+      transform: scale(1.1);
+    }
+    .candle-hint {
+      display: inline-block;
+      background: var(--light-pink);
+      color: #c9184a;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+    }
+
+    /* Dudu & Bubu Section */
+    .gif-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .gif-item {
+      background: white;
+      padding: 10px;
+      border-radius: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .gif-item img {
+      width: 100%;
+      height: 125px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+    .gif-caption {
+      font-size: 0.85rem;
+      margin-top: 8px;
+      font-weight: 700;
+      color: #5c3d4a;
+    }
+
+    /* Love Letter */
+    .letter-preview {
+      background: #fff;
+      border: 2px dashed var(--accent);
+      border-radius: 20px;
+      padding: 22px 18px;
+      text-align: left;
+      position: relative;
+    }
+    .letter-content {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #4a2835;
+      white-space: pre-line;
+      font-weight: 600;
+    }
+    .letter-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Interactive Reasons */
+    .reasons-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .reason-pill {
+      background: white;
+      padding: 14px 18px;
+      border-radius: 16px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #ffd6e0;
+      transition: all 0.25s ease;
+    }
+    .reason-pill:hover {
+      background: var(--light-pink);
+      transform: translateX(6px);
+      border-color: var(--primary);
+    }
+
+    /* Surprise Box */
+    .gift-box {
+      font-size: 4rem;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: inline-block;
+      user-select: none;
+      margin: 10px 0;
+    }
+    .gift-box:hover {
+      transform: scale(1.15) rotate(6deg);
+    }
+    #surprise-text {
+      display: none;
+      margin-top: 16px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #c9184a;
+      background: var(--light-pink);
+      padding: 16px;
+      border-radius: 18px;
+      line-height: 1.6;
+      animation: popIn 0.4s ease;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #7d4f61;
+      margin-top: 30px;
+      font-weight: 600;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Hearts Canvas -->
+  <canvas id="hearts-canvas"></canvas>
+
+  <!-- Sweet Music Audio Toggle -->
+  <button class="music-btn" onclick="toggleMusic()">
+    <span id="music-icon">🎵</span> <span id="music-text">Play Music</span>
+  </button>
+
+  <div class="container">
+    
+    <!-- Hero / Top Greeting -->
+    <div class="card">
+      <img src="https://media.tenor.com/gotOLnyvy4YAAAAM/bubu-dancing-dance.gif" alt="Bubu Dancing" class="hero-gif" />
+      <h1>Happy Birthday</h1>
+      <span class="nickname">My Sweetheart Noha Moni 💖</span>
+      <p class="subtext">To my precious jaan, you are the most beautiful gift in my life! 🌸</p>
+
+      <!-- Countdown -->
+      <div class="countdown-grid" id="countdown">
+        <div class="count-box">
+          <div class="count-num" id="days">00</div>
+          <div class="count-label">Days</div>
+        </div>
+        <div class="count-box">
+          <div class="count-num" id="hours">00</div>
+          <div class="count-label">Hours</div>
+        </div>
+        <div class="count-box">
+          <div class="count-num" id="minutes">00</div>
+          <div class="count-label">Mins</div>
+        </div>
+        <div class="count-box">
+          <div class="count-num" id="seconds">00</div>
+          <div class="count-label">Secs</div>
+        </div>
+      </div>
+      <div id="bday-wish-banner" style="display:none; margin-top: 18px; font-size: 1.3rem; font-weight: 800; color: #ff4d6d;">
+        🎉 TODAY IS MY QUEEN'S BIRTHDAY! HAPPY BIRTHDAY JAANUU! 🎂💖
+      </div>
+    </div>
+
+    <!-- Interactive Cake -->
+    <div class="card">
+      <h2 style="font-size: 1.35rem; color: var(--primary); margin-bottom: 5px;">🎂 Virtual Birthday Cake 🎂</h2>
+      <p style="font-size: 0.92rem; color: #666;">Tap the cake to blow the candle and make a secret wish!</p>
+      
+      <div class="cake-container" onclick="blowCandle()">
+        <img id="cake-graphic" src="https://api.iconify.design/twemoji:birthday-cake.svg" class="cake-img" alt="Cake"/>
+      </div>
+      <br>
+      <div class="candle-hint" id="candle-status">✨ Tap the cake to make a wish! ✨</div>
+    </div>
+
+    <!-- Dudu & Bubu Love Moments -->
+    <div class="card">
+      <h2 style="font-size: 1.35rem; color: var(--primary);">Our Cute Dudu & Bubu Moments 🐻❤️🐼</h2>
+      <p style="font-size: 0.92rem; color: #666;">Just like them, we are made for each other!</p>
+
+      <div class="gif-row">
+        <div class="gif-item">
+          <img src="https://media.tenor.com/LxTbPto0fdoAAAAM/bubu-rose-bubu-sweet.gif" alt="Bubu Rose">
+          <div class="gif-caption">All my love is only for you 🌹</div>
+        </div>
+        <div class="gif-item">
+          <img src="https://media.tenor.com/kOfhJ6VeBIsAAAAM/dudu-bubu.gif" alt="Dudu Bubu Hug">
+          <div class="gif-caption">The warmest cozy hugs! 🤗</div>
+        </div>
+        <div class="gif-item">
+          <img src="https://media.tenor.com/OFV8jy2OuwYAAAAM/bibimbaobei-bububaobei.gif" alt="Bubu Dudu Kiss">
+          <div class="gif-caption">Sweet kisses for my januu 😘</div>
+        </div>
+        <div class="gif-item">
+          <img src="https://media.tenor.com/SIaICUzUXrgAAAAM/dudu-bubu-dudu.gif" alt="Dudu Bubu Fun">
+          <div class="gif-caption">Together forever and always 💕</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Love Letter Section -->
+    <div class="card">
+      <div class="letter-preview">
+        <div class="letter-title">💌 A Letter Straight From My Heart...</div>
+        <div class="letter-content">
+To My Sweetest Noha Moni (My Januu),
+
+On this very special day, I pray with all my heart that you always stay healthy, happy, and smiling. Your sweet little smile brightens my entire world and washes away all my worries.
+
+You are not just my love, you are my best friend, my soulmate, and the greatest blessing in my whole life. Even when you get mad or pout with your cute little tantrums, I fall in love with you all over again!
+
+Just like Dudu can never survive without Bubu, I can never imagine my life without you. You mean everything to me, jaan.
+
+Happy Birthday to the queen of my heart! I love you to infinity and beyond! 💖
+        </div>
+      </div>
+    </div>
+
+    <!-- Reasons Why I Love You -->
+    <div class="card">
+      <h2 style="font-size: 1.35rem; color: var(--primary);">Reasons Why I Love You So Much ✨</h2>
+      <div class="reasons-list">
+        <div class="reason-pill" onclick="popHeart(this)">
+          <span>🥰</span> <span>Your innocent, breathtaking, and adorable smile</span>
+        </div>
+        <div class="reason-pill" onclick="popHeart(this)">
+          <span>🌸</span> <span>How you always care for me & handle my craziness</span>
+        </div>
+        <div class="reason-pill" onclick="popHeart(this)">
+          <span>🥺</span> <span>Your super cute little tantrums and pouty drama</span>
+        </div>
+        <div class="reason-pill" onclick="popHeart(this)">
+          <span>👑</span> <span>Because you are my one and only queen forever</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Surprise Gift Box -->
+    <div class="card">
+      <h2 style="font-size: 1.35rem; color: var(--primary); margin-bottom: 6px;">🎁 A Special Surprise Gift! 🎁</h2>
+      <p style="font-size: 0.92rem; color: #666;">Tap the gift box to unlock your surprise!</p>
+      
+      <div class="gift-box" onclick="openGift()">🎁</div>
+      <div id="surprise-text">
+        ✨ Surprise My Januu! ✨<br><br>
+        My entire heart, my soul, and all my love are permanently registered in your name forever! Happy Birthday, my lovely Jaan! 💍💖
+      </div>
+    </div>
+
+    <footer>
+      Crafted with unconditional love for <b>Noha Moni</b> (My Jaan) ❤️ | 12th October
+    </footer>
+
+  </div>
+
+  <script>
+    // 1. Floating Hearts Background Animation
+    const canvas = document.getElementById('hearts-canvas');
+    const ctx = canvas.getContext('2d');
+    let hearts = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Heart {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + 20;
+        this.size = Math.random() * 14 + 10;
+        this.speed = Math.random() * 1.5 + 0.8;
+        this.opacity = Math.random() * 0.5 + 0.3;
+        this.swing = Math.random() * 2;
+        this.swingSpeed = Math.random() * 0.02 + 0.01;
+      }
+      update() {
+        this.y -= this.speed;
+        this.x += Math.sin(this.y * this.swingSpeed) * 0.8;
+        if (this.y < -20) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = '#ff4d6d';
+        ctx.beginPath();
+        const d = this.size;
+        ctx.moveTo(this.x, this.y);
+        ctx.bezierCurveTo(this.x - d / 2, this.y - d / 2, this.x - d, this.y + d / 3, this.x, this.y + d);
+        ctx.bezierCurveTo(this.x + d, this.y + d / 3, this.x + d / 2, this.y - d / 2, this.x, this.y);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < 25; i++) {
+      hearts.push(new Heart());
+    }
+
+    function animateHearts() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hearts.forEach(h => {
+        h.update();
+        h.draw();
+      });
+      requestAnimationFrame(animateHearts);
+    }
+    animateHearts();
+
+    // 2. Countdown to October 12
+    function updateCountdown() {
+      const now = new Date();
+      let targetYear = now.getFullYear();
+      let targetDate = new Date(targetYear, 9, 12, 0, 0, 0); // 9 = October
+
+      if (now.getTime() > new Date(targetYear, 9, 12, 23, 59, 59).getTime()) {
+        targetDate = new Date(targetYear + 1, 9, 12, 0, 0, 0);
+      }
+
+      if (now.getMonth() === 9 && now.getDate() === 12) {
+        document.getElementById('countdown').style.display = 'none';
+        document.getElementById('bday-wish-banner').style.display = 'block';
+        return;
+      }
+
+      const diff = targetDate.getTime() - now.getTime();
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const m = Math.floor((diff / 1000 / 60) % 60);
+      const s = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').innerText = String(d).padStart(2, '0');
+      document.getElementById('hours').innerText = String(h).padStart(2, '0');
+      document.getElementById('minutes').innerText = String(m).padStart(2, '0');
+      document.getElementById('seconds').innerText = String(s).padStart(2, '0');
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 3. Interactive Cake & Candle
+    let candleBlown = false;
+    function blowCandle() {
+      confetti({
+        particleCount: 120,
+        spread: 75,
+        origin: { y: 0.6 }
+      });
+      
+      const status = document.getElementById('candle-status');
+      if (!candleBlown) {
+        status.innerHTML = "🎉 May all your wishes come true! Happy Birthday Jaan! 💖";
+        status.style.background = "#ff4d6d";
+        status.style.color = "white";
+        candleBlown = true;
+      }
+    }
+
+    // 4. Surprise Gift Box
+    function openGift() {
+      const box = document.querySelector('.gift-box');
+      const surprise = document.getElementById('surprise-text');
+      box.innerHTML = "🎉";
+      surprise.style.display = "block";
+
+      confetti({
+        particleCount: 160,
+        spread: 100,
+        origin: { y: 0.7 }
+      });
+    }
+
+    // 5. Reasons Pop
+    function popHeart(elem) {
+      elem.style.transform = 'scale(1.04)';
+      setTimeout(() => elem.style.transform = 'scale(1)', 200);
+      confetti({
+        particleCount: 25,
+        spread: 45,
+        origin: { y: 0.7 }
+      });
+    }
+
+    // 6. Sweet Birthday Melody Synthesizer
+    let audioCtx = null;
+    let isPlaying = false;
+    let melodyInterval = null;
+
+    function playNote(freq, dur) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + dur);
+    }
+
+    const bdayNotes = [
+      261.6, 261.6, 293.7, 261.6, 349.2, 329.6,
+      261.6, 261.6, 293.7, 261.6, 392.0, 349.2
+    ];
+
+    function toggleMusic() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      
+      const icon = document.getElementById('music-icon');
+      const text = document.getElementById('music-text');
+
+      if (!isPlaying) {
+        isPlaying = true;
+        icon.innerText = "⏸️";
+        text.innerText = "Pause Music";
+        let noteIdx = 0;
+        melodyInterval = setInterval(() => {
+          playNote(bdayNotes[noteIdx], 0.6);
+          noteIdx = (noteIdx + 1) % bdayNotes.length;
+        }, 600);
+      } else {
+        isPlaying = false;
+        icon.innerText = "🎵";
+        text.innerText = "Play Music";
+        clearInterval(melodyInterval);
+      }
+    }
+  </script>
+</body>
+</html>
